@@ -1,0 +1,17 @@
+# Kafka and streaming
+kafka-python  # Kafka client for Python to produce and consume messages from Kafka
+
+# .env file handling
+python-dotenv  # To load environment variables from a .env file
+
+# Data handling and processing
+pandas  # Optional: for data processing and handling CSV/JSON data easily
+
+# Visualization
+matplotlib  # For dynamic and animated visualizations
+
+# Alerts (for SMS or email sending)
+twilio  # For SMS alerts via Twilio (if you use this service for alerts)
+
+# Email handling (for email alerts)
+secure-smtplib  # For sending emails securely (if you're using email alerts)
