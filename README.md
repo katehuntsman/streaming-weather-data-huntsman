@@ -53,8 +53,8 @@ Consumer consumes the data from Kafka, processes it:
 - Visualizes the data with a dynamic graph that updates in real-time.
 
 The graph will show:
-X-axis: Time (from the "timestamp" field).
-Y-axis: Temperature (red line) and Humidity (blue line).
-Planned Alerts
+- X-axis: Time (from the "timestamp" field).
+- Y-axis: Temperature (red line) and Humidity (blue line).
 
+Planned Alerts:
 When certain thresholds are breached (e.g., temperature > 35°C or humidity < 20%), the consumer will notify you, and you can implement SMS/email alerts as needed (this feature can be added in the alert_utils.py file).
