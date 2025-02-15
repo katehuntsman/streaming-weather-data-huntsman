@@ -103,7 +103,7 @@ The **real-time weather data visualization** dynamically displays **temperature*
 
 Below is a screenshot of the dynamic weather visualization showing the **temperature** and **humidity** trends:
 
-![Real-Time Weather Data Plot](images/real_time_weather_plot.png)
+![Real-Time Weather Data Plot](images/Screenshot_2025_02_15_at_12_06_13_PM.png)
 
 The **temperature** plot (red line) and **humidity** plot (blue line) demonstrate how the system visualizes the data in real-time as it streams from Kafka.
 
