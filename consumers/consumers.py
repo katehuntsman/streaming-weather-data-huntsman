@@ -3,7 +3,7 @@ import time
 from kafka import KafkaConsumer
 from collections import deque
 import matplotlib.pyplot as plt
-from visualization import update_plots
+from datetime import datetime
 
 # Kafka configuration
 KAFKA_TOPIC = 'weather_topic'
@@ -38,6 +38,37 @@ def compute_rolling_average(data):
     return sum(data) / len(data)
 
 # Function to handle threshold checks and visualization updates
+def update_plots(ax1, ax2, temperature_data, humidity_data):
+    # Compute rolling averages
+    temp_avg = compute_rolling_average(temperature_data)
+    humidity_avg = compute_rolling_average(humidity_data)
+
+    # Clear previous data
+    ax1.clear()
+    ax2.clear()
+
+    # Plot temperature and humidity with rolling averages
+    ax1.plot(range(len(temperature_data)), temperature_data, color='tab:red', label=f'Temperature (Avg: {temp_avg:.2f}°C)')
+    ax2.plot(range(len(humidity_data)), humidity_data, color='tab:blue', label=f'Humidity (Avg: {humidity_avg:.2f}%)')
+
+    # Add titles and labels
+    ax1.set_title(f'Temperature Over Time (Avg: {temp_avg:.2f}°C)', fontsize=14)
+    ax1.set_xlabel('Time (s)', fontsize=12)
+    ax1.set_ylabel('Temperature (°C)', fontsize=12)
+
+    ax2.set_title(f'Humidity Over Time (Avg: {humidity_avg:.2f}%)', fontsize=14)
+    ax2.set_xlabel('Time (s)', fontsize=12)
+    ax2.set_ylabel('Humidity (%)', fontsize=12)
+
+    # Add gridlines and legends
+    ax1.grid(True, which='both', linestyle='--', linewidth=0.5)
+    ax2.grid(True, which='both', linestyle='--', linewidth=0.5)
+    ax1.legend(loc='upper left', fontsize=10)
+    ax2.legend(loc='upper left', fontsize=10)
+
+    # Tight layout for better spacing
+    plt.tight_layout()
+
 def consume_messages():
     print(f"Consuming messages from topic '{KAFKA_TOPIC}'...")
 
@@ -50,23 +81,27 @@ def consume_messages():
         temperature = data.get('temperature')
         humidity = data.get('humidity')
 
-        # Print received data
         print(f"Received message - Timestamp: {timestamp}, Temp: {temperature}°C, Humidity: {humidity}%")
 
-        # Add data to the respective deques
+        # Append new data to deques
         temperature_data.append(temperature)
         humidity_data.append(humidity)
 
-        # Threshold alerts (example)
-        if temperature > 35:
-            print(f"ALERT: Temperature exceeds 35°C! ({temperature}°C)")
-        if humidity < 20:
-            print(f"ALERT: Humidity is below 20%! ({humidity}%)")
+        # Check for threshold conditions and annotate alerts
+        if temperature > 30:
+            ax1.annotate(f'ALERT: {temperature}°C', xy=(0.95, 0.95), xycoords='axes fraction', 
+                         horizontalalignment='right', verticalalignment='top', 
+                         fontsize=12, color='red', weight='bold')
 
-        # Update the plot with the latest data
-        update_plots(ax1, ax2, temperature_data, humidity_data, temperature, humidity)
-        
-        # Pause to allow for interactive updating
+        if humidity < 20:
+            ax2.annotate(f'ALERT: {humidity}%', xy=(0.95, 0.95), xycoords='axes fraction', 
+                         horizontalalignment='right', verticalalignment='top', 
+                         fontsize=12, color='blue', weight='bold')
+
+        # Update the plots with new data
+        update_plots(ax1, ax2, temperature_data, humidity_data)
+
+        # Pause briefly to allow for the real-time update to appear
         plt.pause(0.1)
 
 if __name__ == "__main__":
