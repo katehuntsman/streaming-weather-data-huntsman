@@ -3,8 +3,7 @@ import time
 from kafka import KafkaConsumer
 from collections import deque
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-from visualization import update_plots  # Import visualization functions
+from visualization import update_plots
 
 # Kafka configuration
 KAFKA_TOPIC = 'weather_topic'
@@ -65,7 +64,7 @@ def consume_messages():
             print(f"ALERT: Humidity is below 20%! ({humidity}%)")
 
         # Update the plot with the latest data
-        update_plots(ax1, ax2, temperature_data, humidity_data)
+        update_plots(ax1, ax2, temperature_data, humidity_data, temperature, humidity)
         
         # Pause to allow for interactive updating
         plt.pause(0.1)
